@@ -225,19 +225,45 @@ function Index() {
 
       <Story onOpenBook={() => setBook(true)} onOpenDesk={setDesk} />
 
-      <button
-        onClick={toggleSound}
-        data-cursor={sound ? "mute" : "listen"}
-        className="pointer-events-auto fixed bottom-6 left-5 z-50 eyebrow text-[9px] text-muted-foreground transition-colors hover:text-champagne md:left-10"
-      >
-        Sound {sound ? "On" : "Off"}
-      </button>
-      <p className="pointer-events-none fixed right-5 bottom-6 z-50 hidden eyebrow text-[9px] md:block">
-        Empress · Chapter One
-      </p>
+      {/* ── Bottom HUD */}
+      <div className="pointer-events-none fixed bottom-0 inset-x-0 z-50 flex items-end justify-between px-5 pb-6 md:px-10">
+        {/* Sound toggle */}
+        <button
+          onClick={toggleSound}
+          data-cursor={sound ? "mute" : "listen"}
+          className="pointer-events-auto flex items-center gap-2 group"
+        >
+          {/* Animated bars when sound is on */}
+          <span className="flex items-end gap-[2px] h-3">
+            {[0.6, 1, 0.75, 0.45].map((h, i) => (
+              <span
+                key={i}
+                className="inline-block w-[2px] rounded-full transition-all duration-300"
+                style={{
+                  height:     `${h * 100}%`,
+                  background: sound ? "var(--champagne)" : "var(--muted-foreground)",
+                  opacity:    sound ? 0.8 + Math.sin(i) * 0.2 : 0.4,
+                  animation:  sound ? `breathe ${0.8 + i * 0.2}s ease-in-out infinite` : "none",
+                  animationDelay: `${i * 0.12}s`,
+                }}
+              />
+            ))}
+          </span>
+          <span className="eyebrow text-[9px] text-muted-foreground/60 transition-colors duration-300 group-hover:text-champagne">
+            {sound ? "Sound On" : "Sound Off"}
+          </span>
+        </button>
+
+        {/* Right label */}
+        <p className="hidden eyebrow text-[9px] text-muted-foreground/35 md:block tracking-[0.36em]">
+          Empress · Chapter One
+        </p>
+      </div>
 
       <div className="vignette" />
       <div className="film-grain" />
+
+      <Cursor />
 
       {node && <NodePanel id={node} onClose={() => setNode(null)} />}
       {desk && <DeskPanel id={desk} onClose={() => setDesk(null)} />}
