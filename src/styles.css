@@ -1,0 +1,184 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * DHIRAJ U. KUMMAR — design system.
+ * Ink black, ivory, champagne, empress magenta.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ivory: var(--ivory);
+  --color-champagne: var(--champagne);
+  --color-empress: var(--empress);
+  --color-charcoal: var(--charcoal);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+}
+
+:root {
+  --radius: 0.125rem;
+
+  --background: oklch(0.06 0.004 60);
+  --foreground: oklch(0.94 0.012 85);
+  --ivory: oklch(0.95 0.014 88);
+  --champagne: oklch(0.83 0.062 82);
+  --empress: oklch(0.55 0.21 355);
+  --charcoal: oklch(0.19 0.005 70);
+
+  --card: oklch(0.1 0.005 70);
+  --card-foreground: var(--ivory);
+  --popover: oklch(0.09 0.005 70);
+  --popover-foreground: var(--ivory);
+  --primary: var(--champagne);
+  --primary-foreground: oklch(0.08 0.004 60);
+  --secondary: oklch(0.16 0.005 70);
+  --secondary-foreground: var(--ivory);
+  --muted: oklch(0.15 0.004 70);
+  --muted-foreground: oklch(0.63 0.01 80);
+  --accent: var(--empress);
+  --accent-foreground: oklch(0.97 0.01 90);
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.97 0.01 90);
+  --border: oklch(0.98 0.01 90 / 12%);
+  --input: oklch(0.98 0.01 90 / 16%);
+  --ring: var(--champagne);
+
+  --font-display: "Bodoni Moda", "Times New Roman", serif;
+  --font-sans: "Archivo", system-ui, sans-serif;
+
+  --grain: 0.035;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    background-color: var(--color-background);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--empress);
+    color: var(--ivory);
+  }
+}
+
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 0.86;
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+@utility rule-line {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--champagne) 55%, transparent),
+    transparent
+  );
+  height: 1px;
+}
+
+/* Film grain + vignette laid over the whole world */
+@utility film-grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
+  mix-blend-mode: screen;
+  animation: grain-shift 0.7s steps(2) infinite;
+}
+
+@utility vignette {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 42%,
+    oklch(0 0 0 / 0.55) 100%
+  );
+}
+
+@keyframes grain-shift {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-2%, 1%);
+  }
+  100% {
+    transform: translate(1%, -2%);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@utility breathe {
+  animation: breathe 3.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
